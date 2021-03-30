@@ -1,0 +1,45 @@
+<!--@subject Contact Us@-->
+
+{{template config_path="design/email/header_template"}}
+<div>
+    <h3>We love hearing from you, Our Customers.Please Contact us about anything at all. Customer details have been submitted with the following details.</h3>
+    <table>
+      <tr>
+        <td>Name:</td>
+        <td>{{var data.name}}</td>
+      </tr>
+      <tr>
+        <td>E-mail: </td>
+        <td>{{var data.email}}</td>
+      </tr>
+      <tr>
+        <td>Telephone: </td>
+        <td> {{var data.telephone}}</td>
+      </tr>
+      <tr>
+        <td>Subject:</td>
+        <td> {{var data.subject}}</td>
+      </tr>
+      <tr>
+        <td>What’s on your mind?</td>
+        <td>{{var data.comment}}</td>
+      </tr>
+	  <tr>
+        <td>Department</td>
+        <td>{{var data.department}}</td>
+      </tr>
+	  <tr>
+        <td>File</td>
+        <td>{{var data.file}}</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>Regards, {{var data.name}}</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+</div>
+{{template config_path="design/email/footer_template"}}

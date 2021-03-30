@@ -1,0 +1,176 @@
+<?php
+/**
+ * Solwin Infotech
+ * Solwin Contact Form Widget Extension
+ *
+ * @category   Solwin
+ * @package    Solwin_Contactwidget
+ * @copyright  Copyright © 2006-2020 Solwin (https://www.solwininfotech.com)
+ * @license    https://www.solwininfotech.com/magento-extension-license/
+ */
+$widgetEnable = $block->getConfigValue('contactwidget_section/general/enable');
+$captchaSitekey = $block->getConfigValue('contactwidget_section/recaptcha/recaptcha_sitekey');
+$captchaTheme = $block->getConfigValue('contactwidget_section/recaptcha/recaptcha_theme');
+$formActionUrl = $block->getFormActionUrl();
+$helper = $this->helper('Solwin\Contactwidget\Helper\Data');
+$currPageUrl = $helper->getCurrentUrls();
+
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+$moduleManager = $objectManager->get('\Magento\Framework\Module\Manager');
+$moduleEnabled = $moduleManager->isEnabled('Solwin_Contactwidget');
+?>
+<?php if ($widgetEnable && $moduleEnabled) {?>
+<form class="form contact" action="<?= /* @noEscape */ $formActionUrl ?>" id="contact-form" method="post" enctype="multipart/form-data" data-hasrequired="<?= $block->escapeHtml(__('* Required Fields')) ?>" data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml($block->getData('cc_title')) ?></span></legend><br />
+        <div class="field note no-label"><?= $block->escapeHtml($block->getData('cc_content')) ?></div>
+        <div class="field name required">
+            <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+            <div class="control">
+                <input name="name" id="name" title="<?= $block->escapeHtml(__('Name')) ?>" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+        <div class="field email required">
+            <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+            <div class="control">
+                <input name="email" id="email" title="<?= $block->escapeHtml(__('Email')) ?>" class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+            </div>
+        </div>
+        <?php
+        if ($block->getData('cc_enable_phoneno')) {
+            ?>
+        <div class="field telephone">
+            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <div class="control">
+                <input name="telephone" id="telephone" title="<?= $block->escapeHtml(__('Phone Number')) ?>" value="" class="input-text" type="text" data-validate="{'validate-number':true}"/>
+            </div>
+        </div>
+        <?php } ?>
+        <div class="field name required">
+            <label class="label" for="subject"><span><?= $block->escapeHtml(__('Subject')) ?></span></label>
+            <div class="control">
+                <input name="subject" id="subject" title="<?= $block->escapeHtml(__('Subject')) ?>" class="input-text" type="text" data-validate="{required:true}"/>
+            </div>
+        </div>
+        <div class="field comment required">
+            <label class="label" for="comment"><span><?= $block->escapeHtml(__('What’s on your mind?')) ?></span></label>
+            <div class="control">
+                <textarea name="comment" id="comment" title="<?= $block->escapeHtml(__('What’s on your mind?')) ?>" class="input-text" cols="5" rows="3" data-validate="{required:true}"></textarea>
+            </div>
+        </div>
+		<div class="field department required">
+		   <label class="label" for="department"><span><?= $block->escapeHtml(__('Department')) ?></span></label>
+		   <div class="control">
+			   <select name="department" required>
+				   <option disabled selected hidden value=""><?= $block->escapeHtml(__('Select a department')) ?></option>
+				   <option><?= $block->escapeHtml(__('Information Technology')) ?></option>
+				   <option><?= $block->escapeHtml(__('Computer Science')) ?></option>
+			   </select>
+		   </div>
+		</div>
+		<div class="field file">
+		   <label class="label" for="file"><span><?= $block->escapeHtml(__('Attach a file')) ?></span></label>
+		   <div class="control">
+			   <input name="MAX_FILE_SIZE" type="hidden" value="2000000" />
+			   <input type="file" name="file" id="file">
+		   </div>
+		</div>
+         <?php
+            if ($block->getData('cc_enable_recaptcha') && ($captchaSitekey != "")) {
+                ?>
+        <div class="field comment required">
+            <label class="label" for="captcha"><span><?= $block->escapeHtml(__('ReCaptcha')) ?></span></label>
+            <div class="control">
+                <script src="https://www.google.com/recaptcha/api.js"></script>
+                <div class="g-recaptcha" data-sitekey="<?= /* @noEscape */ $captchaSitekey?>" data-theme="<?= /* @noEscape */ $captchaTheme ?>"></div>
+            </div>
+        </div>
+        <?php } ?>
+
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <input type="hidden" name="currUrl" id="currUrl" value="<?= /* @noEscape */ $currPageUrl ?>" />
+            <input type="hidden" name="enablerecaptcha" id="currUrl" value="<?= /* @noEscape */ $block->getData('cc_enable_recaptcha') ?>" />
+            <button type="submit" title="<?= $block->escapeHtml(__('Submit')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+    <?php
+}
+?>
+<?php
+if ($block->getData('cc_enable_recaptcha') && ($captchaSitekey != "")) { ?>
+<style>
+#contact-form .fieldset .field {
+    width: calc(100% - 13px);
+}
+</style>
+<?php } ?>
+<style>
+#contact-form {
+    width: 100%;
+}
+#contact-form .action.submit.primary {
+    margin-bottom: 10px;
+}
+#contact-form .g-recaptcha {
+  transform: scale(0.8);
+  -webkit-transform: scale(0.8);
+  transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+}
+#contact-form .fieldset {
+    margin-bottom: 10px;
+}
+
+@media screen and (device-aspect-ratio: 2/3) {
+    #contact-form .fieldset .field input[type="text"] {
+        font-size: 16px;
+  }
+  #contact-form .fieldset .field input[type="email"] {
+        font-size: 16px;
+  }
+  #contact-form .fieldset .field textarea {
+    font-size: 16px;
+  }
+}
+
+@media screen and (device-aspect-ratio: 40/71) {
+  #contact-form .fieldset .field input[type="text"] {
+        font-size: 16px;
+  }
+  #contact-form .fieldset .field input[type="email"] {
+        font-size: 16px;
+  }
+  #contact-form .fieldset .field textarea {
+    font-size: 16px;
+  }
+}
+
+@media screen and (device-aspect-ratio: 375/667) {
+    #contact-form .fieldset .field input[type="text"] {
+          font-size: 16px;
+    }
+    #contact-form .fieldset .field input[type="email"] {
+          font-size: 16px;
+    }
+    #contact-form .fieldset .field textarea {
+      font-size: 16px;
+    }
+}
+
+@media screen and (device-aspect-ratio: 9/16) {
+  #contact-form .fieldset .field input[type="text"] {
+        font-size: 16px;
+  }
+  #contact-form .fieldset .field input[type="email"] {
+        font-size: 16px;
+  }
+  #contact-form .fieldset .field textarea {
+    font-size: 16px;
+  }
+}
+</style>

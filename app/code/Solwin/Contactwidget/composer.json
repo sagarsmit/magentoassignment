@@ -1,0 +1,22 @@
+{
+    "name": "solwin/contactwidget",
+    "description": "Magento 2 Easy Contact Form Widget extension enables the eCommerce store owner to integrate an contact/inquiry form in their store easily using a widget.",
+    "type": "magento2-module",
+    "version": "1.0.6",
+    "authors": [
+        {
+            "name": "Solwin",
+            "email": "stdabhoya@yahoo.com",
+            "homepage": "https://www.solwininfotech.com/",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Solwin\\Contactwidget\\": ""
+        }
+    }
+}
